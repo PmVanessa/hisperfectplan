@@ -1,0 +1,12 @@
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Chrome profile directory used by DevTools
+.chrome_profile/
+
+# Logs and scratch
+*.log
+
+# Large uncompressed source video (>100MB exceeds GitHub push limit; web uses optimized mp4)
+assets/originals/video/

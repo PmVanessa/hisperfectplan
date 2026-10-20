@@ -2364,6 +2364,51 @@ body {
   color: var(--c-ivory-page);
 }
 
+.colophon-loc-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--c-gold-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+.colophon-loc-link:hover {
+  color: #ffffff;
+}
+
+.colophon-loc-arrow {
+  transition: transform var(--transition-fast);
+}
+
+.colophon-loc-link:hover .colophon-loc-arrow {
+  transform: translateX(3px);
+}
+
+.colophon-policy-note {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(250, 246, 240, 0.7);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.colophon-policy-sub {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(250, 246, 240, 0.5);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
 .colophon-divider {
   width: 100%;
   height: 1px;

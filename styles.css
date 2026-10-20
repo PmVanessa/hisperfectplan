@@ -1806,61 +1806,156 @@ body {
   border-bottom: var(--hairline-burgundy);
 }
 
-/* Hotel Directory List & Brick Stack */
+/* Hotel Directory List & Dramatic Brick Stack */
 .hotel-directory-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 36px;
-  perspective: 1200px;
+  gap: 18px;
+  margin-bottom: 40px;
+  perspective: 1400px;
 }
 
 .hotel-row-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 26px;
-  background: #FFFFFF;
-  border: 1px solid rgba(88, 10, 20, 0.12);
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(45, 10, 16, 0.04), 0 1px 3px rgba(0, 0, 0, 0.03);
+  padding: 24px 28px;
+  border-radius: 10px;
   text-decoration: none;
-  color: inherit;
   cursor: pointer;
   gap: 16px;
   position: relative;
 }
 
-/* Brick Falling Animation */
+/* Base Brick State & High-Impact Falling Transitions */
 .hotel-brick {
   opacity: 0;
-  will-change: transform, opacity;
-  transition: transform 0.75s cubic-bezier(0.2, 0.95, 0.3, 1.05),
-              opacity 0.65s ease-out,
+  will-change: transform, opacity, filter;
+  transition: transform 0.85s cubic-bezier(0.16, 1.08, 0.38, 1.28),
+              opacity 0.4s ease-out,
+              filter 0.4s ease-out,
               box-shadow 0.3s ease,
               border-color 0.25s ease;
 }
 
-/* Alternating Brick Drop: Odd from Right, Even from Left */
+/* VERY DRAMATIC Offscreen Alternating Starting Positions:
+   Start high above at the far sides of the page, NOT in the middle */
 .hotel-brick-right {
-  transform: translate3d(140px, -60px, 0) rotate(4deg) scale(0.96);
+  transform: translate3d(calc(50vw + 50%), -380px, 0) rotate(22deg) scale(0.75);
+  filter: blur(6px);
 }
 
 .hotel-brick-left {
-  transform: translate3d(-140px, -60px, 0) rotate(-4deg) scale(0.96);
+  transform: translate3d(calc(-50vw - 50%), -380px, 0) rotate(-22deg) scale(0.75);
+  filter: blur(6px);
 }
 
-/* Settled / Fallen State */
+/* Settled / Fallen State: Solid impact, squares off to 0deg, crystal clear */
 .hotel-brick.is-fallen {
   opacity: 1;
   transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  filter: blur(0px);
 }
 
-/* Hover Interaction on Fallen Bricks */
-.hotel-row-item.hotel-brick.is-fallen:hover {
-  transform: translateY(-3px) scale(1.008);
-  box-shadow: 0 14px 28px rgba(88, 10, 20, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
-  border-color: var(--c-burgundy-rich);
+/* ==========================================================================
+   ALTERNATING BRICK COLOR THEMES: BURGUNDY & IVORY
+   ========================================================================== */
+
+/* 1. BURGUNDY BRICK (Brick 1, 3, 5 - Falls from Right) */
+.hotel-brick-burgundy,
+.hotel-brick:nth-child(odd) {
+  background: linear-gradient(135deg, #580A14 0%, #3B040B 100%);
+  border: 1.5px solid rgba(229, 195, 120, 0.4);
+  border-bottom: 5px solid #230105; /* Architectural brick depth */
+  box-shadow: 0 16px 36px rgba(45, 4, 10, 0.35), 0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+}
+
+.hotel-brick-burgundy .hotel-row-title,
+.hotel-brick:nth-child(odd) .hotel-row-title {
+  color: #FFFFFF;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.hotel-brick-burgundy .hotel-row-area,
+.hotel-brick:nth-child(odd) .hotel-row-area {
+  color: #E5C378; /* Champagne gold */
+  letter-spacing: 1.5px;
+}
+
+.hotel-brick-burgundy .hotel-row-link-cue,
+.hotel-brick:nth-child(odd) .hotel-row-link-cue {
+  border: 1.5px solid #E5C378;
+  color: #FAF6F0;
+  background: rgba(229, 195, 120, 0.12);
+}
+
+.hotel-brick-burgundy .hotel-arrow,
+.hotel-brick:nth-child(odd) .hotel-arrow {
+  color: #E5C378;
+}
+
+/* Burgundy Brick Hover */
+.hotel-row-item.hotel-brick-burgundy.is-fallen:hover,
+.hotel-row-item.hotel-brick:nth-child(odd).is-fallen:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 24px 50px rgba(50, 4, 10, 0.5), 0 8px 18px rgba(0, 0, 0, 0.3);
+  border-color: #E5C378;
+}
+
+.hotel-row-item.hotel-brick-burgundy:hover .hotel-row-link-cue,
+.hotel-row-item.hotel-brick:nth-child(odd):hover .hotel-row-link-cue {
+  background: #E5C378;
+  color: #3B040B;
+  box-shadow: 0 4px 14px rgba(229, 195, 120, 0.4);
+}
+
+/* 2. IVORY BRICK (Brick 2, 4, 6 - Falls from Left) */
+.hotel-brick-ivory,
+.hotel-brick:nth-child(even) {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5EFE6 100%);
+  border: 1.5px solid rgba(88, 10, 20, 0.22);
+  border-bottom: 5px solid #D5C6B7; /* Architectural brick depth */
+  box-shadow: 0 16px 36px rgba(45, 10, 16, 0.10), 0 4px 10px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  color: var(--c-charcoal-ink);
+}
+
+.hotel-brick-ivory .hotel-row-title,
+.hotel-brick:nth-child(even) .hotel-row-title {
+  color: #580A14;
+}
+
+.hotel-brick-ivory .hotel-row-area,
+.hotel-brick:nth-child(even) .hotel-row-area {
+  color: #7A6352;
+  letter-spacing: 1.5px;
+}
+
+.hotel-brick-ivory .hotel-row-link-cue,
+.hotel-brick:nth-child(even) .hotel-row-link-cue {
+  border: 1.5px solid #580A14;
+  color: #580A14;
+  background: rgba(88, 10, 20, 0.05);
+}
+
+.hotel-brick-ivory .hotel-arrow,
+.hotel-brick:nth-child(even) .hotel-arrow {
+  color: #580A14;
+}
+
+/* Ivory Brick Hover */
+.hotel-row-item.hotel-brick-ivory.is-fallen:hover,
+.hotel-row-item.hotel-brick:nth-child(even).is-fallen:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 24px 50px rgba(88, 10, 20, 0.18), 0 8px 18px rgba(0, 0, 0, 0.08);
+  border-color: #580A14;
+}
+
+.hotel-row-item.hotel-brick-ivory:hover .hotel-row-link-cue,
+.hotel-row-item.hotel-brick:nth-child(even):hover .hotel-row-link-cue {
+  background: #580A14;
+  color: #FAF6F0;
+  box-shadow: 0 4px 14px rgba(88, 10, 20, 0.3);
 }
 
 .hotel-row-info {
@@ -1873,13 +1968,8 @@ body {
   font-family: var(--font-serif);
   font-size: clamp(1.25rem, 2.3vw, 1.55rem);
   font-weight: 500;
-  color: var(--c-charcoal-ink);
   margin-bottom: 2px;
   transition: color var(--transition-fast);
-}
-
-.hotel-row-item:hover .hotel-row-title {
-  color: var(--c-burgundy-rich);
 }
 
 .hotel-row-area {
@@ -1887,7 +1977,6 @@ body {
   font-size: 0.78rem;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--c-text-muted);
 }
 
 .hotel-row-link-cue {
@@ -1895,9 +1984,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  border: 1px solid var(--c-burgundy-rich);
   border-radius: 9999px;
-  color: var(--c-burgundy-rich);
   font-family: var(--font-sans);
   font-size: 0.72rem;
   font-weight: 600;
@@ -1905,12 +1992,6 @@ body {
   text-transform: uppercase;
   white-space: nowrap;
   transition: all var(--transition-fast);
-}
-
-.hotel-row-item:hover .hotel-row-link-cue {
-  background: var(--c-burgundy-rich);
-  color: #FFFFFF;
-  gap: 12px;
 }
 
 .hotel-arrow {
@@ -2367,13 +2448,14 @@ body {
     padding: 20px 18px;
   }
   .hotel-brick-right {
-    transform: translate3d(55px, -35px, 0) rotate(2.5deg) scale(0.97);
+    transform: translate3d(calc(50vw + 35%), -220px, 0) rotate(14deg) scale(0.8);
   }
   .hotel-brick-left {
-    transform: translate3d(-55px, -35px, 0) rotate(-2.5deg) scale(0.97);
+    transform: translate3d(calc(-50vw - 35%), -220px, 0) rotate(-14deg) scale(0.8);
   }
-  .hotel-row-item.hotel-brick.is-fallen:hover {
-    transform: none;
+  .hotel-row-item.hotel-brick-burgundy.is-fallen:hover,
+  .hotel-row-item.hotel-brick-ivory.is-fallen:hover {
+    transform: translateY(-2px);
   }
   .hotel-row-link-cue {
     width: 100%;

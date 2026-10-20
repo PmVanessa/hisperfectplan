@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 6. HOTEL DIRECTORY ALTERNATING BRICK FALLING ANIMATION
+  // 6. HOTEL DIRECTORY ALTERNATING BRICK FALLING ANIMATION (TRIGGERS ON EVERY SCROLL)
   // =========================================================================
   const hotelBricks = document.querySelectorAll('.hotel-brick');
   if (hotelBricks.length > 0) {
@@ -290,18 +290,32 @@ document.addEventListener('DOMContentLoaded', () => {
       const brickObserver = new IntersectionObserver((entries) => {
         let staggerCount = 0;
         entries.forEach((entry) => {
+          const brick = entry.target;
           if (entry.isIntersecting) {
-            const brick = entry.target;
-            setTimeout(() => {
-              brick.classList.add('is-fallen');
-            }, staggerCount * 120);
+            // Clear any pending timer
+            if (brick._fallTimer) {
+              clearTimeout(brick._fallTimer);
+            }
+            // Dramatic 180ms stagger between alternating bricks
+            const delay = staggerCount * 180;
             staggerCount++;
-            brickObserver.unobserve(brick);
+            brick._fallTimer = setTimeout(() => {
+              brick.classList.add('is-fallen');
+            }, delay);
+          } else {
+            // Scrolled out of view: clear timer and reset instantly so it re-triggers on every scroll
+            if (brick._fallTimer) {
+              clearTimeout(brick._fallTimer);
+            }
+            brick.style.transition = 'none';
+            brick.classList.remove('is-fallen');
+            void brick.offsetWidth; // Force reflow to immediately lock into launch perch
+            brick.style.transition = '';
           }
         });
       }, {
         threshold: 0.12,
-        rootMargin: '0px 0px -40px 0px'
+        rootMargin: '0px 0px -30px 0px'
       });
 
       hotelBricks.forEach((brick) => {

@@ -297,6 +297,8 @@ document.addEventListener('DOMContentLoaded', () => {
           video.requestFullscreen();
         } else if (video.webkitRequestFullscreen) {
           video.webkitRequestFullscreen();
+        } else if (video.webkitEnterFullscreen) {
+          video.webkitEnterFullscreen();
         }
       });
     }

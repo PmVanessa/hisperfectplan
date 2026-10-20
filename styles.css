@@ -2271,6 +2271,15 @@ body {
   font-size: 0.72rem;
   letter-spacing: 1.5px;
   color: rgba(250, 246, 240, 0.4);
+  margin-bottom: 6px;
+}
+
+.colophon-credit {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.88rem;
+  letter-spacing: 0.5px;
+  color: var(--c-gold-light);
 }
 
 /* ==========================================================================

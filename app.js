@@ -246,6 +246,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Media Viewport Observer: pause videos that scroll out of view to save mobile battery/CPU
+  if ('IntersectionObserver' in window) {
+    const videoViewportObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const vid = entry.target;
+        if (!entry.isIntersecting && !vid.paused) {
+          vid.pause();
+          const frame = vid.closest('.film-screen-frame');
+          const overlay = frame?.querySelector('.film-play-trigger');
+          const playBtn = frame?.querySelector('.video-play-toggle');
+          if (overlay) overlay.classList.remove('hidden');
+          if (playBtn) {
+            const p = playBtn.querySelector('.p-play');
+            const pa = playBtn.querySelector('.p-pause');
+            if (p) p.style.display = 'inline';
+            if (pa) pa.style.display = 'none';
+          }
+        }
+      });
+    }, { threshold: 0.15 });
+
+    allFilmVideos.forEach((v) => videoViewportObserver.observe(v));
+  }
+
+  // Lazy Load Observer & Fade-In Enhancement
+  const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+  lazyImages.forEach((img) => {
+    function markLoaded() {
+      img.classList.add('is-loaded');
+    }
+    if (img.complete) {
+      markLoaded();
+    } else {
+      img.addEventListener('load', markLoaded, { once: true });
+      img.addEventListener('error', markLoaded, { once: true });
+    }
+  });
+
   // =========================================================================
   // 5. ICAL (.ICS) DOWNLOAD (CLIENT-SIDE BLOB GENERATOR)
   // =========================================================================

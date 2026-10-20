@@ -1784,26 +1784,36 @@ body {
    SECTION 08: ACCOMMODATIONS
    ========================================================================== */
 .section-accommodations {
-  background: var(--c-ivory-page);
-  color: var(--c-charcoal-ink);
-  overflow-x: clip;
   position: relative;
+  overflow-x: clip;
+  background-image: 
+    linear-gradient(180deg, 
+      rgba(15, 2, 5, 0.86) 0%, 
+      rgba(25, 3, 7, 0.74) 40%, 
+      rgba(25, 3, 7, 0.78) 65%, 
+      rgba(15, 2, 5, 0.92) 100%),
+    url("assets/photos/hotel-lobby-bg.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  color: #FFFFFF;
 }
 
 .section-accommodations .header-index {
-  color: var(--c-burgundy-rich);
+  color: #E5C378; /* Champagne gold */
 }
 
 .section-accommodations .header-title {
-  color: var(--c-burgundy-deep);
+  color: #FAF6F0; /* Luminous warm ivory */
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
 }
 
 .section-accommodations .header-standfirst {
-  color: var(--c-text-muted);
+  color: rgba(250, 246, 240, 0.75);
 }
 
 .section-accommodations .editorial-header {
-  border-bottom: var(--hairline-burgundy);
+  border-bottom: 1px solid rgba(229, 195, 120, 0.25);
 }
 
 /* Hotel Directory List & Dramatic Brick Stack */
@@ -1841,13 +1851,13 @@ body {
 /* VERY DRAMATIC Offscreen Alternating Starting Positions:
    Start high above at the far sides of the page, NOT in the middle */
 .hotel-brick-right {
-  transform: translate3d(calc(50vw + 50%), -380px, 0) rotate(22deg) scale(0.75);
-  filter: blur(6px);
+  transform: translate3d(min(480px, 75vw), -320px, 0) rotate(20deg) scale(0.78);
+  filter: blur(5px);
 }
 
 .hotel-brick-left {
-  transform: translate3d(calc(-50vw - 50%), -380px, 0) rotate(-22deg) scale(0.75);
-  filter: blur(6px);
+  transform: translate3d(max(-480px, -75vw), -320px, 0) rotate(-20deg) scale(0.78);
+  filter: blur(5px);
 }
 
 /* Settled / Fallen State: Solid impact, squares off to 0deg, crystal clear */
@@ -2014,10 +2024,11 @@ body {
   align-items: center;
   gap: 10px;
   padding: 12px 28px;
-  background: transparent;
-  border: 1px solid var(--c-burgundy-rich);
+  background: rgba(20, 2, 5, 0.65);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid #E5C378;
   border-radius: 9999px;
-  color: var(--c-burgundy-rich);
+  color: #FAF6F0;
   font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 600;
@@ -2028,18 +2039,20 @@ body {
 }
 
 .hotel-help-link:hover {
-  background: var(--c-burgundy-rich);
-  color: #FFFFFF;
+  background: #E5C378;
+  color: #3B040B;
   gap: 14px;
-  box-shadow: 0 6px 18px rgba(88, 10, 20, 0.15);
+  box-shadow: 0 6px 20px rgba(229, 195, 120, 0.4);
 }
 
 .hotel-help-arrow {
   display: inline-block;
   transition: transform var(--transition-fast);
+  color: #E5C378;
 }
 
 .hotel-help-link:hover .hotel-help-arrow {
+  color: #3B040B;
   transform: translateX(4px);
 }
 

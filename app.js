@@ -284,46 +284,76 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================================================================
   // 6. HOTEL DIRECTORY ALTERNATING BRICK FALLING ANIMATION (TRIGGERS ON EVERY SCROLL)
   // =========================================================================
+  const hotelList = document.querySelector('.hotel-directory-list');
   const hotelBricks = document.querySelectorAll('.hotel-brick');
-  if (hotelBricks.length > 0) {
+
+  if (hotelBricks.length > 0 && hotelList) {
+    let fallTimers = [];
+    let isFallen = false;
+
+    function triggerFallingBricks() {
+      if (isFallen) return;
+      isFallen = true;
+
+      // Clear any pending timers
+      fallTimers.forEach(t => clearTimeout(t));
+      fallTimers = [];
+
+      hotelBricks.forEach((brick, index) => {
+        const timer = setTimeout(() => {
+          brick.classList.add('is-fallen');
+        }, index * 180);
+        fallTimers.push(timer);
+      });
+    }
+
+    function resetFallingBricks() {
+      if (!isFallen) return;
+      isFallen = false;
+
+      fallTimers.forEach(t => clearTimeout(t));
+      fallTimers = [];
+
+      hotelBricks.forEach((brick) => {
+        brick.style.transition = 'none';
+        brick.classList.remove('is-fallen');
+        void brick.offsetWidth; // Force layout recalculation
+        brick.style.transition = '';
+      });
+    }
+
+    // 1. Primary: IntersectionObserver on the UNTRANSFORMED parent container
     if ('IntersectionObserver' in window) {
-      const brickObserver = new IntersectionObserver((entries) => {
-        let staggerCount = 0;
+      const listObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          const brick = entry.target;
           if (entry.isIntersecting) {
-            // Clear any pending timer
-            if (brick._fallTimer) {
-              clearTimeout(brick._fallTimer);
-            }
-            // Dramatic 180ms stagger between alternating bricks
-            const delay = staggerCount * 180;
-            staggerCount++;
-            brick._fallTimer = setTimeout(() => {
-              brick.classList.add('is-fallen');
-            }, delay);
+            triggerFallingBricks();
           } else {
-            // Scrolled out of view: clear timer and reset instantly so it re-triggers on every scroll
-            if (brick._fallTimer) {
-              clearTimeout(brick._fallTimer);
-            }
-            brick.style.transition = 'none';
-            brick.classList.remove('is-fallen');
-            void brick.offsetWidth; // Force reflow to immediately lock into launch perch
-            brick.style.transition = '';
+            resetFallingBricks();
           }
         });
       }, {
-        threshold: 0.12,
-        rootMargin: '0px 0px -30px 0px'
+        threshold: 0.08,
+        rootMargin: '0px 0px -20px 0px'
       });
 
-      hotelBricks.forEach((brick) => {
-        brickObserver.observe(brick);
-      });
-    } else {
-      hotelBricks.forEach((brick) => brick.classList.add('is-fallen'));
+      listObserver.observe(hotelList);
     }
+
+    // 2. Secondary Scroll Listener: Guaranteed fallback on every scroll
+    function checkHotelsScroll() {
+      const rect = hotelList.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight * 0.95 && rect.bottom > window.innerHeight * 0.05;
+      if (inView) {
+        triggerFallingBricks();
+      } else {
+        resetFallingBricks();
+      }
+    }
+
+    window.addEventListener('scroll', checkHotelsScroll, { passive: true });
+    // Check immediately on load in case the page is already at this position
+    checkHotelsScroll();
   }
 
 });

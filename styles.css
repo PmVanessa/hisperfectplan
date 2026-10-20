@@ -1732,11 +1732,7 @@ body {
   border-bottom: 1px solid rgba(229, 195, 120, 0.22);
 }
 
-.suite-seal-icon {
-  color: var(--c-gold-accent, #E5C378);
-  font-size: 0.8rem;
-  opacity: 0.85;
-}
+
 
 .suite-seal-title {
   font-family: var(--font-sans);

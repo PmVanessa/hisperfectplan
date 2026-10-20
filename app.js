@@ -270,6 +270,27 @@ document.addEventListener('DOMContentLoaded', () => {
     allFilmVideos.forEach((v) => videoViewportObserver.observe(v));
   }
 
+  // Proximity Video Background Preloader:
+  // Pre-buffers video stream in the background as soon as user scrolls within 450px of the film section
+  const filmSection = document.getElementById('proposal');
+  if ('IntersectionObserver' in window && filmSection) {
+    const videoPreloadObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          allFilmVideos.forEach((vid) => {
+            if (vid.preload !== 'metadata' && vid.preload !== 'auto') {
+              vid.preload = 'metadata';
+              vid.load();
+            }
+          });
+          observer.disconnect();
+        }
+      });
+    }, { rootMargin: '450px 0px' });
+
+    videoPreloadObserver.observe(filmSection);
+  }
+
   // Lazy Load Observer & Fade-In Enhancement
   const lazyImages = document.querySelectorAll('img[loading="lazy"]');
   lazyImages.forEach((img) => {

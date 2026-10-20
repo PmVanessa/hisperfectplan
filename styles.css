@@ -1701,83 +1701,195 @@ body {
   color: rgba(250, 246, 240, 0.85);
 }
 
-.concierge-roster {
+/* ==========================================================================
+   CONCIERGE SUITE — LETTERPRESS STATIONERY & GLASS DOCK HYBRID
+   ========================================================================== */
+.concierge-suite {
+  max-width: 960px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, rgba(22, 3, 8, 0.88) 0%, rgba(12, 1, 4, 0.94) 100%);
+  border: 1px solid rgba(229, 195, 120, 0.35);
+  border-radius: 6px;
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(229, 195, 120, 0.28),
+    0 0 35px rgba(184, 51, 74, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+  position: relative;
+}
+
+.concierge-suite::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(229, 195, 120, 0.12);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.concierge-suite-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background: linear-gradient(90deg, rgba(229, 195, 120, 0.03) 0%, rgba(229, 195, 120, 0.12) 50%, rgba(229, 195, 120, 0.03) 100%);
+  border-bottom: 1px solid rgba(229, 195, 120, 0.22);
+}
+
+.suite-seal-icon {
+  color: var(--c-gold-accent, #E5C378);
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.suite-seal-title {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 3.5px;
+  color: var(--c-gold-light, #F2DCAD);
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.concierge-dock-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  position: relative;
 }
 
-.concierge-card {
-  border: var(--hairline-dark);
-  padding: 38px 28px;
-  background: rgba(10, 1, 3, 0.6);
+.concierge-bay {
+  padding: 44px 32px 40px;
   display: flex;
   flex-direction: column;
-  text-align: center;
   align-items: center;
-  border-radius: 4px;
-  transition: all var(--transition-fast);
+  text-align: center;
+  position: relative;
+  border-right: 1px solid rgba(229, 195, 120, 0.18);
+  transition: background var(--transition-normal);
 }
 
-.concierge-card:hover {
-  border-color: rgba(197, 160, 89, 0.45);
-  background: rgba(16, 2, 5, 0.8);
+.concierge-bay:last-child {
+  border-right: none;
+}
+
+.concierge-bay:hover {
+  background: rgba(229, 195, 120, 0.03);
+}
+
+.c-crest {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(229, 195, 120, 0.55);
+  background: radial-gradient(circle, rgba(184, 51, 74, 0.3) 0%, rgba(12, 1, 4, 0.9) 100%);
+  box-shadow: 
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    inset 0 0 10px rgba(229, 195, 120, 0.2),
+    0 0 0 3px rgba(229, 195, 120, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.concierge-bay:hover .c-crest {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  border-color: rgba(229, 195, 120, 0.85);
+  box-shadow: 
+    0 6px 18px rgba(0, 0, 0, 0.6),
+    inset 0 0 12px rgba(229, 195, 120, 0.3),
+    0 0 0 3px rgba(229, 195, 120, 0.16);
+}
+
+.c-crest span {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--c-gold-light, #F2DCAD);
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .c-name {
   font-family: var(--font-serif);
   font-size: 1.85rem;
-  color: var(--c-ivory-page);
+  color: var(--c-ivory-page, #FAF6F0);
   font-weight: 400;
   margin-bottom: 6px;
+  letter-spacing: 0.5px;
 }
 
 .c-phone {
-  font-size: 0.95rem;
-  letter-spacing: 1.5px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
   color: rgba(250, 246, 240, 0.7);
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 }
 
 .c-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   margin-top: auto;
 }
 
 .c-btn {
   flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   text-decoration: none;
-  font-size: 0.7rem;
-  letter-spacing: 1.5px;
+  font-size: 0.68rem;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
   font-weight: 600;
-  padding: 11px 0;
-  text-align: center;
+  padding: 11px 8px;
   border-radius: 3px;
-  transition: all var(--transition-fast);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.c-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .c-wa {
-  background: #25D366;
-  color: #fff;
+  background: rgba(18, 140, 126, 0.18);
+  border: 1px solid rgba(37, 211, 102, 0.45);
+  color: #9FF3C3;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .c-wa:hover {
-  opacity: 0.9;
+  background: rgba(37, 211, 102, 0.92);
+  color: #062416;
+  border-color: #25D366;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+  transform: translateY(-2px);
 }
 
 .c-tel {
-  border: 1px solid rgba(250, 246, 240, 0.3);
-  color: var(--c-ivory-page);
+  background: rgba(229, 195, 120, 0.08);
+  border: 1px solid rgba(229, 195, 120, 0.38);
+  color: var(--c-ivory-page, #FAF6F0);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .c-tel:hover {
-  border-color: var(--c-gold-hairline);
-  color: var(--c-gold-light);
+  background: var(--c-gold-accent, #E5C378);
+  color: #1A0408;
+  border-color: var(--c-gold-accent, #E5C378);
+  box-shadow: 0 6px 18px rgba(229, 195, 120, 0.3);
+  transform: translateY(-2px);
 }
 
 /* ==========================================================================
@@ -2327,7 +2439,7 @@ body {
   .colophon-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .concierge-roster, .hotel-roster {
+  .hotel-roster {
     grid-template-columns: repeat(2, 1fr);
   }
   .magazine-pinstack-deck {
@@ -2341,6 +2453,17 @@ body {
     max-width: 380px;
     margin: 0 auto;
     gap: 28px;
+  }
+  .concierge-dock-grid {
+    grid-template-columns: 1fr;
+  }
+  .concierge-bay {
+    border-right: none;
+    border-bottom: 1px solid rgba(229, 195, 120, 0.18);
+    padding: 34px 24px;
+  }
+  .concierge-bay:last-child {
+    border-bottom: none;
   }
 }
 
@@ -2503,8 +2626,8 @@ body {
   .editorial-section {
     padding: 70px 0;
   }
-  .concierge-roster {
-    grid-template-columns: 1fr;
+  .concierge-bay {
+    padding: 30px 18px;
   }
   .hotel-row-item {
     flex-direction: column;

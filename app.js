@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
       'DTSTART:20261107T110000Z',
       'DTEND:20261107T190000Z',
       'SUMMARY:Wedding of Ileanwa & Enyojo (#HisPerfectPlan)',
-      'DESCRIPTION:Wedding Celebration of Ileanwa Peters & Enyojo Atabo!\\nJoin us for the Holy Matrimony and Grand Reception at The Greenlife Event Center, Oregun, Ikeja, Lagos.\\nWe can\'t wait to celebrate together!\\nHashtag: #HisPerfectPlan',
+      'DESCRIPTION:Wedding Celebration of Ileanwa & Enyojo!\\nJoin us for the Holy Matrimony and Grand Reception at The Greenlife Event Center, Oregun, Ikeja, Lagos.\\nWe can\'t wait to celebrate together!\\nHashtag: #HisPerfectPlan',
       'LOCATION:The Greenlife Event Center, 72/82 Kudirat Abiola Way, Oregun, Ikeja, Lagos, Nigeria',
       'STATUS:CONFIRMED',
       'SEQUENCE:0',

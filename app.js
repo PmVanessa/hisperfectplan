@@ -44,24 +44,26 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateTicker, 1000);
 
   // =========================================================================
-  // 2B. FLOATING DOCK SCROLL SPY & NAVIGATION
+  // 2B. FLOATING DOCK SCROLL SPY & NAVIGATION (ALL SECTIONS)
   // =========================================================================
-  const dockLinks = document.querySelectorAll('.dock-link');
-  const spySections = ['gallery', 'proposal', 'rsvp', 'registry']
+  const dockLinks = document.querySelectorAll('.dock-link[href^="#"]');
+  const spySections = ['hero', 'gallery', 'proposal', 'asoebi', 'rsvp', 'accommodations', 'registry']
     .map(id => document.getElementById(id))
     .filter(Boolean);
 
   function updateDockActiveState() {
     const scrollPos = window.scrollY + window.innerHeight * 0.35;
-    let currentId = '';
+    let currentId = 'hero';
 
-    spySections.forEach(section => {
-      const top = section.offsetTop;
-      const height = section.offsetHeight;
-      if (scrollPos >= top && scrollPos < top + height) {
-        currentId = section.id;
-      }
-    });
+    if (window.scrollY > 150) {
+      spySections.forEach(section => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          currentId = section.id;
+        }
+      });
+    }
 
     dockLinks.forEach(link => {
       const href = link.getAttribute('href');
@@ -247,38 +249,45 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================================================================
   // 5. ICAL (.ICS) DOWNLOAD (CLIENT-SIDE BLOB GENERATOR)
   // =========================================================================
+  function triggerIcsDownload() {
+    const icsLines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//HisPerfectPlan//Ileanwa and Enyojo Wedding//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:ileanwa-enyojo-wedding-20261107@hisperfectplan',
+      'DTSTAMP:20261019T180000Z',
+      'DTSTART:20261107T110000Z',
+      'DTEND:20261107T190000Z',
+      'SUMMARY:Wedding of Ileanwa & Enyojo (#HisPerfectPlan)',
+      'DESCRIPTION:Wedding Celebration of Ileanwa Momoh & Enyojo Atabo!\\nJoin us for the Holy Matrimony and Grand Reception at The Greenlife Event Center, Oregun, Ikeja, Lagos.\\nWe can\'t wait to celebrate together!\\nHashtag: #HisPerfectPlan',
+      'LOCATION:The Greenlife Event Center, 72/82 Kudirat Abiola Way, Oregun, Ikeja, Lagos, Nigeria',
+      'STATUS:CONFIRMED',
+      'SEQUENCE:0',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([icsLines], { type: 'text/calendar;charset=utf-8' });
+    const dlLink = document.createElement('a');
+    dlLink.href = window.URL.createObjectURL(blob);
+    dlLink.setAttribute('download', 'Ileanwa-Enyojo-Wedding-Invitation.ics');
+    document.body.appendChild(dlLink);
+    dlLink.click();
+    document.body.removeChild(dlLink);
+    showToast('Wedding calendar invite (.ics) downloaded');
+  }
+
   const downloadIcsBtn = document.getElementById('download-ics-btn');
   if (downloadIcsBtn) {
-    downloadIcsBtn.addEventListener('click', () => {
-      const icsLines = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//HisPerfectPlan//Ileanwa and Enyojo Wedding//EN',
-        'CALSCALE:GREGORIAN',
-        'METHOD:PUBLISH',
-        'BEGIN:VEVENT',
-        'UID:ileanwa-enyojo-wedding-20261107@hisperfectplan',
-        'DTSTAMP:20261019T180000Z',
-        'DTSTART:20261107T110000Z',
-        'DTEND:20261107T190000Z',
-        'SUMMARY:Wedding of Ileanwa & Enyojo (#HisPerfectPlan)',
-        'DESCRIPTION:Wedding Celebration of Ileanwa Momoh & Enyojo Atabo!\\nJoin us for the Holy Matrimony and Grand Reception at The Greenlife Event Center, Oregun, Ikeja, Lagos.\\nWe can\'t wait to celebrate together!\\nHashtag: #HisPerfectPlan',
-        'LOCATION:The Greenlife Event Center, 72/82 Kudirat Abiola Way, Oregun, Ikeja, Lagos, Nigeria',
-        'STATUS:CONFIRMED',
-        'SEQUENCE:0',
-        'END:VEVENT',
-        'END:VCALENDAR'
-      ].join('\r\n');
+    downloadIcsBtn.addEventListener('click', triggerIcsDownload);
+  }
 
-      const blob = new Blob([icsLines], { type: 'text/calendar;charset=utf-8' });
-      const dlLink = document.createElement('a');
-      dlLink.href = window.URL.createObjectURL(blob);
-      dlLink.setAttribute('download', 'Ileanwa-Enyojo-Wedding-Invitation.ics');
-      document.body.appendChild(dlLink);
-      dlLink.click();
-      document.body.removeChild(dlLink);
-      showToast('Wedding calendar invite (.ics) downloaded');
-    });
+  const dockCalBtn = document.getElementById('dock-cal-btn');
+  if (dockCalBtn) {
+    dockCalBtn.addEventListener('click', triggerIcsDownload);
   }
 
   // =========================================================================

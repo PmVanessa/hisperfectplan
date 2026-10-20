@@ -301,6 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let scrollDirection = 'down';
     let isTicking = false;
     const queuedTimers = new Map(); // brick -> timer ID
+    let lastScheduledDropTime = 0;
+    const STAGGER_INTERVAL = 260; // 260ms distinct gap so each card falls individually
 
     function updateScrollDirection() {
       const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
@@ -354,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Animate newly visible bricks in the direction of active scroll
+      // Animate newly visible bricks one-by-one in the direction of active scroll
       if (newlyVisibleBricks.length > 0) {
         // When scrolling UP from bottom: reverse order (bottom brick triggers first)
         // When scrolling DOWN from top: normal order (top brick triggers first)
@@ -364,11 +366,27 @@ document.addEventListener('DOMContentLoaded', () => {
           newlyVisibleBricks.sort((a, b) => a.idx - b.idx);
         }
 
-        newlyVisibleBricks.forEach((item, staggerIndex) => {
-          const delay = staggerIndex * 110; // Rapid, punchy stagger
+        const now = performance.now();
+        // If previous queue has finished or is in the past, anchor from now
+        if (lastScheduledDropTime < now) {
+          lastScheduledDropTime = now;
+        }
+
+        newlyVisibleBricks.forEach((item, i) => {
+          // First brick in a fresh queue drops immediately; subsequent ones wait STAGGER_INTERVAL each
+          const targetTime = (i === 0 && lastScheduledDropTime === now)
+            ? now
+            : lastScheduledDropTime + STAGGER_INTERVAL;
+
+          lastScheduledDropTime = targetTime;
+          const delay = Math.max(0, targetTime - now);
+
           const timer = setTimeout(() => {
             item.brick.classList.add('is-fallen');
             queuedTimers.delete(item.brick);
+            if (queuedTimers.size === 0) {
+              lastScheduledDropTime = 0;
+            }
           }, delay);
 
           queuedTimers.set(item.brick, timer);

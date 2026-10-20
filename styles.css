@@ -1951,9 +1951,9 @@ body {
 .hotel-brick {
   opacity: 0;
   will-change: transform, opacity, filter;
-  transition: transform 0.85s cubic-bezier(0.16, 1.08, 0.38, 1.28),
-              opacity 0.4s ease-out,
-              filter 0.4s ease-out,
+  transition: transform 0.62s cubic-bezier(0.16, 1.08, 0.38, 1.22),
+              opacity 0.35s ease-out,
+              filter 0.35s ease-out,
               box-shadow 0.3s ease,
               border-color 0.25s ease;
 }

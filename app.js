@@ -361,7 +361,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let isTicking = false;
     const queuedTimers = new Map(); // brick -> timer ID
     let lastScheduledDropTime = 0;
-    const STAGGER_INTERVAL = 260; // 260ms distinct gap so each card falls individually
+    function getStaggerInterval() {
+      return (window.innerWidth <= 768) ? 130 : 250;
+    }
 
     function updateScrollDirection() {
       const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
@@ -379,9 +381,10 @@ document.addEventListener('DOMContentLoaded', () => {
       updateScrollDirection();
 
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      // Trigger threshold: 50px below top of viewport, 60px above bottom of viewport
-      const enterThresholdBottom = viewportHeight - 50;
-      const enterThresholdTop = 40;
+      const isMobile = window.innerWidth <= 768;
+      // Responsive trigger threshold: triggers right at edge on mobile for maximum visible flight
+      const enterThresholdBottom = isMobile ? (viewportHeight + 20) : (viewportHeight - 40);
+      const enterThresholdTop = 30;
 
       const newlyVisibleBricks = [];
 
@@ -430,6 +433,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lastScheduledDropTime < now) {
           lastScheduledDropTime = now;
         }
+
+        const STAGGER_INTERVAL = getStaggerInterval();
 
         newlyVisibleBricks.forEach((item, i) => {
           // First brick in a fresh queue drops immediately; subsequent ones wait STAGGER_INTERVAL each

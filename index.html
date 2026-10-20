@@ -34,13 +34,14 @@
   <meta name="twitter:description" content="The celebration of holy matrimony between Ileanwa and Enyojo. Saturday, November 7, 2026 • Lagos, Nigeria. Strictly by invitation.">
   <meta name="twitter:image" content="https://hisperfectplan.vercel.app/assets/photos/envelope-share-card.jpg">
 
-  <!-- High-Fashion Editorial Typography: Cormorant Garamond, Bodoni Moda, Cinzel, Plus Jakarta Sans -->
+  <!-- High-Fashion Editorial Typography: Cormorant Garamond, Cinzel, Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400;1,6..96,600&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Preload Critical LCP Hero Image -->
-  <link rel="preload" as="image" href="assets/photos/prewedding-8.jpg" fetchpriority="high">
+  <!-- Preload Critical LCP Hero Image (Responsive: Mobile vs Desktop) -->
+  <link rel="preload" as="image" href="assets/photos/prewedding-8-mobile.jpg" media="(max-width: 680px)" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/photos/prewedding-8.jpg" media="(min-width: 681px)" fetchpriority="high">
 
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -54,14 +55,17 @@
     <section class="romantic-hero" id="hero">
       <!-- Full-Bleed Background Photo: 100vw x 100vh -->
       <div class="hero-bg-cover" aria-hidden="true">
-        <img 
-          src="assets/photos/prewedding-8.jpg" 
-          alt="Ileanwa and Enyojo" 
-          class="hero-cover-img"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        >
+        <picture class="hero-cover-picture">
+          <source media="(max-width: 680px)" srcset="assets/photos/prewedding-8-mobile.jpg">
+          <img 
+            src="assets/photos/prewedding-8.jpg" 
+            alt="Ileanwa and Enyojo" 
+            class="hero-cover-img"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          >
+        </picture>
         <div class="hero-cover-overlay"></div>
       </div>
 

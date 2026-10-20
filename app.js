@@ -281,4 +281,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // =========================================================================
+  // 6. HOTEL DIRECTORY ALTERNATING BRICK FALLING ANIMATION
+  // =========================================================================
+  const hotelBricks = document.querySelectorAll('.hotel-brick');
+  if (hotelBricks.length > 0) {
+    if ('IntersectionObserver' in window) {
+      const brickObserver = new IntersectionObserver((entries) => {
+        let staggerCount = 0;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const brick = entry.target;
+            setTimeout(() => {
+              brick.classList.add('is-fallen');
+            }, staggerCount * 120);
+            staggerCount++;
+            brickObserver.unobserve(brick);
+          }
+        });
+      }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      hotelBricks.forEach((brick) => {
+        brickObserver.observe(brick);
+      });
+    } else {
+      hotelBricks.forEach((brick) => brick.classList.add('is-fallen'));
+    }
+  }
+
 });

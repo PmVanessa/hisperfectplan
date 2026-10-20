@@ -1786,6 +1786,8 @@ body {
 .section-accommodations {
   background: var(--c-ivory-page);
   color: var(--c-charcoal-ink);
+  overflow-x: clip;
+  position: relative;
 }
 
 .section-accommodations .header-index {
@@ -1804,31 +1806,61 @@ body {
   border-bottom: var(--hairline-burgundy);
 }
 
-/* Hotel Directory List */
+/* Hotel Directory List & Brick Stack */
 .hotel-directory-list {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--c-ivory-dark);
+  gap: 14px;
   margin-bottom: 36px;
+  perspective: 1200px;
 }
 
 .hotel-row-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 20px;
-  border-bottom: 1px solid var(--c-ivory-dark);
+  padding: 22px 26px;
+  background: #FFFFFF;
+  border: 1px solid rgba(88, 10, 20, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(45, 10, 16, 0.04), 0 1px 3px rgba(0, 0, 0, 0.03);
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  transition: all var(--transition-fast);
-  background: transparent;
   gap: 16px;
+  position: relative;
 }
 
-.hotel-row-item:hover {
-  background: rgba(88, 10, 20, 0.045);
-  padding-left: 28px;
+/* Brick Falling Animation */
+.hotel-brick {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition: transform 0.75s cubic-bezier(0.2, 0.95, 0.3, 1.05),
+              opacity 0.65s ease-out,
+              box-shadow 0.3s ease,
+              border-color 0.25s ease;
+}
+
+/* Alternating Brick Drop: Odd from Right, Even from Left */
+.hotel-brick-right {
+  transform: translate3d(140px, -60px, 0) rotate(4deg) scale(0.96);
+}
+
+.hotel-brick-left {
+  transform: translate3d(-140px, -60px, 0) rotate(-4deg) scale(0.96);
+}
+
+/* Settled / Fallen State */
+.hotel-brick.is-fallen {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+}
+
+/* Hover Interaction on Fallen Bricks */
+.hotel-row-item.hotel-brick.is-fallen:hover {
+  transform: translateY(-3px) scale(1.008);
+  box-shadow: 0 14px 28px rgba(88, 10, 20, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+  border-color: var(--c-burgundy-rich);
 }
 
 .hotel-row-info {
@@ -2332,7 +2364,16 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
-    padding: 20px 14px;
+    padding: 20px 18px;
+  }
+  .hotel-brick-right {
+    transform: translate3d(55px, -35px, 0) rotate(2.5deg) scale(0.97);
+  }
+  .hotel-brick-left {
+    transform: translate3d(-55px, -35px, 0) rotate(-2.5deg) scale(0.97);
+  }
+  .hotel-row-item.hotel-brick.is-fallen:hover {
+    transform: none;
   }
   .hotel-row-link-cue {
     width: 100%;
@@ -2373,5 +2414,13 @@ body {
   .b-copy-group, .reg-copy-wrap {
     width: 100%;
     justify-content: space-between;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotel-brick {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }

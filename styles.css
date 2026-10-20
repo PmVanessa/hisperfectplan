@@ -531,6 +531,27 @@ body {
   pointer-events: none;
 }
 
+.film-play-trigger.is-loading {
+  cursor: wait;
+}
+
+.film-play-trigger.is-loading .play-disc {
+  border: 2px solid rgba(250, 246, 240, 0.25);
+  border-top-color: var(--c-ivory-page, #FAF6EE);
+  animation: filmDiscSpin 0.8s linear infinite;
+  background: rgba(88, 10, 20, 0.95);
+  transform: scale(1.05);
+}
+
+.film-play-trigger.is-loading .play-svg {
+  opacity: 0.25;
+}
+
+@keyframes filmDiscSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .play-disc {
   width: 58px;
   height: 58px;
@@ -562,6 +583,7 @@ body {
   text-transform: uppercase;
   color: var(--c-ivory-page);
   font-weight: 600;
+  transition: opacity 0.2s ease;
 }
 
 .film-controls-bar {

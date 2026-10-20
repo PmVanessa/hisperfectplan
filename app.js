@@ -157,6 +157,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!video) return;
 
+    function resetPlayOverlayState(cardOverlay) {
+      if (!cardOverlay) return;
+      cardOverlay.classList.remove('is-loading');
+      const textElem = cardOverlay.querySelector('.play-text');
+      const orig = textElem?.getAttribute('data-orig-text');
+      if (textElem && orig) {
+        textElem.textContent = orig;
+      }
+    }
+
     function togglePlay() {
       if (video.paused || video.ended) {
         // Pause any other playing video so they don't overlap audio
@@ -166,7 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const otherCard = otherVideo.closest('.film-screen-frame');
             const otherOverlay = otherCard?.querySelector('.film-play-trigger');
             const otherPlayBtn = otherCard?.querySelector('.video-play-toggle');
-            if (otherOverlay) otherOverlay.classList.remove('hidden');
+            if (otherOverlay) {
+              otherOverlay.classList.remove('hidden');
+              resetPlayOverlayState(otherOverlay);
+            }
             if (otherPlayBtn) {
               const p = otherPlayBtn.querySelector('.p-play');
               const pa = otherPlayBtn.querySelector('.p-pause');
@@ -176,14 +189,31 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
 
-        video.play().then(() => {
-          if (overlay) overlay.classList.add('hidden');
-          if (playIcon) playIcon.style.display = 'none';
-          if (pauseIcon) pauseIcon.style.display = 'inline';
-        }).catch(e => console.warn(e));
+        // Instant tactile feedback: display loading state immediately on tap
+        if (overlay) {
+          overlay.classList.add('is-loading');
+          const textElem = overlay.querySelector('.play-text');
+          if (textElem && !textElem.hasAttribute('data-orig-text')) {
+            textElem.setAttribute('data-orig-text', textElem.textContent.trim());
+          }
+          if (textElem) {
+            textElem.textContent = 'STARTING...';
+          }
+        }
+
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => {
+            console.warn('Playback error or aborted:', e);
+            resetPlayOverlayState(overlay);
+          });
+        }
       } else {
         video.pause();
-        if (overlay) overlay.classList.remove('hidden');
+        if (overlay) {
+          overlay.classList.remove('hidden');
+          resetPlayOverlayState(overlay);
+        }
         if (playIcon) playIcon.style.display = 'inline';
         if (pauseIcon) pauseIcon.style.display = 'none';
       }
@@ -192,6 +222,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (overlay) overlay.addEventListener('click', togglePlay);
     if (playToggleBtn) playToggleBtn.addEventListener('click', togglePlay);
     video.addEventListener('click', togglePlay);
+
+    // Dismiss overlay and loading state the instant frames begin rendering
+    video.addEventListener('playing', () => {
+      if (overlay) {
+        overlay.classList.add('hidden');
+        resetPlayOverlayState(overlay);
+      }
+      if (playIcon) playIcon.style.display = 'none';
+      if (pauseIcon) pauseIcon.style.display = 'inline';
+    });
+
+    video.addEventListener('waiting', () => {
+      if (overlay && !overlay.classList.contains('hidden')) {
+        overlay.classList.add('is-loading');
+      }
+    });
+
+    video.addEventListener('canplay', () => {
+      if (!video.paused && overlay) {
+        overlay.classList.add('hidden');
+        resetPlayOverlayState(overlay);
+      }
+    });
 
     video.addEventListener('timeupdate', () => {
       if (video.duration) {
@@ -208,7 +261,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     video.addEventListener('ended', () => {
-      if (overlay) overlay.classList.remove('hidden');
+      if (overlay) {
+        overlay.classList.remove('hidden');
+        resetPlayOverlayState(overlay);
+      }
       if (playIcon) playIcon.style.display = 'inline';
       if (pauseIcon) pauseIcon.style.display = 'none';
     });
@@ -256,7 +312,10 @@ document.addEventListener('DOMContentLoaded', () => {
           const frame = vid.closest('.film-screen-frame');
           const overlay = frame?.querySelector('.film-play-trigger');
           const playBtn = frame?.querySelector('.video-play-toggle');
-          if (overlay) overlay.classList.remove('hidden');
+          if (overlay) {
+            overlay.classList.remove('hidden');
+            overlay.classList.remove('is-loading');
+          }
           if (playBtn) {
             const p = playBtn.querySelector('.p-play');
             const pa = playBtn.querySelector('.p-pause');
@@ -270,23 +329,45 @@ document.addEventListener('DOMContentLoaded', () => {
     allFilmVideos.forEach((v) => videoViewportObserver.observe(v));
   }
 
+  // Background Video Preloader:
+  // Starts buffering video streams in the background right after initial window load,
+  // keeping the poster cover intact so playback starts instantaneously with zero delay when clicked.
+  function warmVideosInBackground() {
+    allFilmVideos.forEach((vid) => {
+      vid.preload = 'auto';
+      try {
+        vid.load();
+      } catch (err) {
+        console.warn('Background video warming deferred:', err);
+      }
+    });
+  }
+
+  if (document.readyState === 'complete') {
+    setTimeout(warmVideosInBackground, 600);
+  } else {
+    window.addEventListener('load', () => {
+      setTimeout(warmVideosInBackground, 600);
+    });
+  }
+
   // Proximity Video Background Preloader:
-  // Pre-buffers video stream in the background as soon as user scrolls within 450px of the film section
+  // Pre-buffers video stream in the background as soon as user scrolls within 500px of the film section
   const filmSection = document.getElementById('proposal');
   if ('IntersectionObserver' in window && filmSection) {
     const videoPreloadObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           allFilmVideos.forEach((vid) => {
-            if (vid.preload !== 'metadata' && vid.preload !== 'auto') {
-              vid.preload = 'metadata';
+            vid.preload = 'auto';
+            try {
               vid.load();
-            }
+            } catch (e) {}
           });
           observer.disconnect();
         }
       });
-    }, { rootMargin: '450px 0px' });
+    }, { rootMargin: '500px 0px' });
 
     videoPreloadObserver.observe(filmSection);
   }

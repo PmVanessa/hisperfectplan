@@ -291,78 +291,108 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 6. HOTEL DIRECTORY ALTERNATING BRICK FALLING ANIMATION (TRIGGERS ON EVERY SCROLL)
+  // 6. HOTEL DIRECTORY DIRECTION-AWARE & REVERSIBLE BRICK FALLING ANIMATION
   // =========================================================================
   const hotelList = document.querySelector('.hotel-directory-list');
-  const hotelBricks = document.querySelectorAll('.hotel-brick');
+  const hotelBricks = Array.from(document.querySelectorAll('.hotel-brick'));
 
   if (hotelBricks.length > 0 && hotelList) {
-    let fallTimers = [];
-    let isFallen = false;
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollDirection = 'down';
+    let isTicking = false;
+    const queuedTimers = new Map(); // brick -> timer ID
 
-    function triggerFallingBricks() {
-      if (isFallen) return;
-      isFallen = true;
-
-      // Clear any pending timers
-      fallTimers.forEach(t => clearTimeout(t));
-      fallTimers = [];
-
-      hotelBricks.forEach((brick, index) => {
-        const timer = setTimeout(() => {
-          brick.classList.add('is-fallen');
-        }, index * 180);
-        fallTimers.push(timer);
-      });
-    }
-
-    function resetFallingBricks() {
-      if (!isFallen) return;
-      isFallen = false;
-
-      fallTimers.forEach(t => clearTimeout(t));
-      fallTimers = [];
-
-      hotelBricks.forEach((brick) => {
-        brick.style.transition = 'none';
-        brick.classList.remove('is-fallen');
-        void brick.offsetWidth; // Force layout recalculation
-        brick.style.transition = '';
-      });
-    }
-
-    // 1. Primary: IntersectionObserver on the UNTRANSFORMED parent container
-    if ('IntersectionObserver' in window) {
-      const listObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            triggerFallingBricks();
-          } else {
-            resetFallingBricks();
-          }
-        });
-      }, {
-        threshold: 0.08,
-        rootMargin: '0px 0px -20px 0px'
-      });
-
-      listObserver.observe(hotelList);
-    }
-
-    // 2. Secondary Scroll Listener: Guaranteed fallback on every scroll
-    function checkHotelsScroll() {
-      const rect = hotelList.getBoundingClientRect();
-      const inView = rect.top < window.innerHeight * 0.95 && rect.bottom > window.innerHeight * 0.05;
-      if (inView) {
-        triggerFallingBricks();
-      } else {
-        resetFallingBricks();
+    function updateScrollDirection() {
+      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      const diff = currentScrollY - lastScrollY;
+      if (diff > 1) {
+        scrollDirection = 'down';
+        lastScrollY = currentScrollY;
+      } else if (diff < -1) {
+        scrollDirection = 'up';
+        lastScrollY = currentScrollY;
       }
     }
 
-    window.addEventListener('scroll', checkHotelsScroll, { passive: true });
-    // Check immediately on load in case the page is already at this position
-    checkHotelsScroll();
+    function checkHotelBricks() {
+      updateScrollDirection();
+
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      // Trigger threshold: 50px below top of viewport, 60px above bottom of viewport
+      const enterThresholdBottom = viewportHeight - 50;
+      const enterThresholdTop = 40;
+
+      const newlyVisibleBricks = [];
+
+      hotelBricks.forEach((brick, idx) => {
+        const rect = brick.getBoundingClientRect();
+
+        // Check if brick is currently within visible trigger window
+        const isInTriggerZone = rect.top < enterThresholdBottom && rect.bottom > enterThresholdTop;
+
+        if (isInTriggerZone) {
+          if (!brick.classList.contains('is-fallen') && !queuedTimers.has(brick)) {
+            newlyVisibleBricks.push({ brick, idx });
+          }
+        } else {
+          // Reset ONLY when brick has fully moved well outside the screen
+          const isFarAbove = rect.bottom < -100;
+          const isFarBelow = rect.top > viewportHeight + 100;
+
+          if (isFarAbove || isFarBelow) {
+            if (queuedTimers.has(brick)) {
+              clearTimeout(queuedTimers.get(brick));
+              queuedTimers.delete(brick);
+            }
+            if (brick.classList.contains('is-fallen')) {
+              brick.style.transition = 'none';
+              brick.classList.remove('is-fallen');
+              void brick.offsetHeight; // Flush style
+              brick.style.transition = '';
+            }
+          }
+        }
+      });
+
+      // Animate newly visible bricks in the direction of active scroll
+      if (newlyVisibleBricks.length > 0) {
+        // When scrolling UP from bottom: reverse order (bottom brick triggers first)
+        // When scrolling DOWN from top: normal order (top brick triggers first)
+        if (scrollDirection === 'up') {
+          newlyVisibleBricks.sort((a, b) => b.idx - a.idx);
+        } else {
+          newlyVisibleBricks.sort((a, b) => a.idx - b.idx);
+        }
+
+        newlyVisibleBricks.forEach((item, staggerIndex) => {
+          const delay = staggerIndex * 110; // Rapid, punchy stagger
+          const timer = setTimeout(() => {
+            item.brick.classList.add('is-fallen');
+            queuedTimers.delete(item.brick);
+          }, delay);
+
+          queuedTimers.set(item.brick, timer);
+        });
+      }
+    }
+
+    function onScrollOrResize() {
+      if (!isTicking) {
+        window.requestAnimationFrame(() => {
+          checkHotelBricks();
+          isTicking = false;
+        });
+        isTicking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+
+    // Initial check on load
+    checkHotelBricks();
+    setTimeout(checkHotelBricks, 250);
+    setTimeout(checkHotelBricks, 700);
   }
 
 });

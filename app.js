@@ -487,26 +487,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
       const isMobile = window.innerWidth <= 768;
-      // Responsive trigger threshold: triggers comfortably as each brick enters the viewport
-      const enterThresholdBottom = isMobile ? (viewportHeight - 60) : (viewportHeight - 40);
+      const listRect = hotelList.getBoundingClientRect();
+      // Responsive trigger threshold: triggers comfortably as each brick's landing slot enters view
+      const enterThresholdBottom = isMobile ? (viewportHeight - 70) : (viewportHeight - 50);
       const enterThresholdTop = 30;
 
       const newlyVisibleBricks = [];
 
       hotelBricks.forEach((brick, idx) => {
-        const rect = brick.getBoundingClientRect();
+        // Calculate true landing slot position in viewport (unaffected by CSS transform offsets)
+        const slotTop = listRect.top + brick.offsetTop;
+        const slotBottom = slotTop + brick.offsetHeight;
 
-        // Check if brick is currently within visible trigger window
-        const isInTriggerZone = rect.top < enterThresholdBottom && rect.bottom > enterThresholdTop;
+        // Check if brick's landing slot is currently within visible trigger window
+        const isInTriggerZone = slotTop < enterThresholdBottom && slotBottom > enterThresholdTop;
 
         if (isInTriggerZone) {
           if (!brick.classList.contains('is-fallen') && !queuedTimers.has(brick)) {
             newlyVisibleBricks.push({ brick, idx });
           }
         } else {
-          // Reset ONLY when brick has fully moved well outside the screen
-          const isFarAbove = rect.bottom < -100;
-          const isFarBelow = rect.top > viewportHeight + 100;
+          // Reset ONLY when brick's landing slot has fully moved well outside the screen
+          const isFarAbove = slotBottom < -120;
+          const isFarBelow = slotTop > viewportHeight + 120;
 
           if (isFarAbove || isFarBelow) {
             if (queuedTimers.has(brick)) {

@@ -2447,14 +2447,14 @@ body {
                 border-color 0.25s ease;
   }
   .hotel-brick-right {
-    transform: translate3d(min(45px, 12vw), -180px, 0) rotate(14deg) scale(0.85);
+    transform: translate3d(min(40px, 10vw), -140px, 0) rotate(12deg) scale(0.88);
     opacity: 0;
-    filter: blur(4px);
+    filter: blur(3px);
   }
   .hotel-brick-left {
-    transform: translate3d(max(-45px, -12vw), -180px, 0) rotate(-14deg) scale(0.85);
+    transform: translate3d(max(-40px, -10vw), -140px, 0) rotate(-12deg) scale(0.88);
     opacity: 0;
-    filter: blur(4px);
+    filter: blur(3px);
   }
   .hotel-brick.is-fallen {
     transform: translate3d(0, 0, 0) rotate(0deg) scale(1);

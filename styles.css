@@ -2438,13 +2438,57 @@ body {
     gap: 6px;
     white-space: nowrap;
   }
+  /* Physical Tactile Slam & Multi-Bounce Animations */
+  @keyframes hotelBounceRight {
+    0% {
+      transform: translate3d(min(42px, 11vw), -150px, 0) rotate(14deg) scale(0.88);
+      opacity: 0;
+      filter: blur(3px);
+    }
+    48% {
+      transform: translate3d(0, 15px, 0) rotate(-3.5deg) scale(1.03);
+      opacity: 1;
+      filter: blur(0px);
+    }
+    68% {
+      transform: translate3d(0, -10px, 0) rotate(1.8deg) scale(0.99);
+    }
+    84% {
+      transform: translate3d(0, 4px, 0) rotate(-0.6deg) scale(1.005);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+      opacity: 1;
+      filter: blur(0px);
+    }
+  }
+
+  @keyframes hotelBounceLeft {
+    0% {
+      transform: translate3d(max(-42px, -11vw), -150px, 0) rotate(-14deg) scale(0.88);
+      opacity: 0;
+      filter: blur(3px);
+    }
+    48% {
+      transform: translate3d(0, 15px, 0) rotate(3.5deg) scale(1.03);
+      opacity: 1;
+      filter: blur(0px);
+    }
+    68% {
+      transform: translate3d(0, -10px, 0) rotate(-1.8deg) scale(0.99);
+    }
+    84% {
+      transform: translate3d(0, 4px, 0) rotate(0.6deg) scale(1.005);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+      opacity: 1;
+      filter: blur(0px);
+    }
+  }
+
   .hotel-brick {
     will-change: transform, opacity, filter;
-    transition: transform 0.62s cubic-bezier(0.16, 1.08, 0.38, 1.22),
-                opacity 0.35s ease-out,
-                filter 0.35s ease-out,
-                box-shadow 0.3s ease,
-                border-color 0.25s ease;
   }
   .hotel-brick-right {
     transform: translate3d(min(40px, 10vw), -140px, 0) rotate(12deg) scale(0.88);
@@ -2456,10 +2500,11 @@ body {
     opacity: 0;
     filter: blur(3px);
   }
-  .hotel-brick.is-fallen {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-    opacity: 1;
-    filter: blur(0px);
+  .hotel-brick-right.is-fallen {
+    animation: hotelBounceRight 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .hotel-brick-left.is-fallen {
+    animation: hotelBounceLeft 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
   .hotel-row-item.hotel-brick-burgundy.is-fallen:hover,
   .hotel-row-item.hotel-brick-ivory.is-fallen:hover {

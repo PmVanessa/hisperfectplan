@@ -467,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const queuedTimers = new Map(); // brick -> timer ID
     let lastScheduledDropTime = 0;
     function getStaggerInterval() {
-      return (window.innerWidth <= 768) ? 170 : 250;
+      return (window.innerWidth <= 768) ? 180 : 250;
     }
 
     function updateScrollDirection() {
@@ -488,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
       const isMobile = window.innerWidth <= 768;
       // Responsive trigger threshold: triggers comfortably in visible view on mobile for punchy visible drop
-      const enterThresholdBottom = isMobile ? (viewportHeight - 50) : (viewportHeight - 40);
+      const enterThresholdBottom = isMobile ? (viewportHeight - 110) : (viewportHeight - 40);
       const enterThresholdTop = 30;
 
       const newlyVisibleBricks = [];

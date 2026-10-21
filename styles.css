@@ -1363,6 +1363,10 @@ body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
+.c-bay-header {
+  display: contents;
+}
+
 .c-info-group {
   display: flex;
   flex-direction: column;
@@ -2224,9 +2228,14 @@ body {
 @media (max-width: 680px) {
   .romantic-hero {
     min-height: 540px;
+    align-items: center;
+    justify-content: center;
   }
   .hero-cover-img {
     object-position: 58% 70%;
+  }
+  .hero-center-typography {
+    transform: translateY(clamp(-72px, -9.5vh, -50px));
   }
   .hero-names-display {
     font-size: clamp(1.75rem, 6.5vw, 2.3rem);
@@ -2237,7 +2246,7 @@ body {
   }
   .hero-dateline {
     font-size: 0.76rem;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   .floating-dock-nav {
     left: 8px;
@@ -2272,22 +2281,31 @@ body {
     font-size: 0.74rem;
   }
   .hero-center-countdown {
-    padding: 6px 16px;
+    padding: 6px 18px;
+    background: rgba(18, 3, 6, 0.45);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1.5px solid rgba(250, 246, 238, 0.45);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(250, 246, 238, 0.2);
   }
   .cd-unit strong {
     font-size: 0.95rem;
+    color: #FAF6EE;
+  }
+  .cd-unit small {
+    color: rgba(250, 246, 238, 0.85);
   }
   .editorial-section {
     padding: 70px 0;
   }
 
-  /* Sleek Thin Horizontal RSVP Cards on Mobile */
+  /* Spacious, Elegant 2-Tier RSVP Coordinator Cards on Mobile (Never Crammed) */
   .concierge-suite {
     margin: 0 10px;
-    border-radius: 8px;
+    border-radius: 10px;
   }
   .concierge-suite-header {
-    padding: 12px 16px;
+    padding: 14px 18px;
   }
   .suite-seal-title {
     font-size: 0.65rem;
@@ -2299,26 +2317,32 @@ body {
   }
   .concierge-bay {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: stretch;
     text-align: left;
-    padding: 12px 14px;
+    padding: 16px 18px 14px;
     gap: 12px;
     border-right: none;
-    border-bottom: 1px solid rgba(250, 246, 238, 0.12);
+    border-bottom: 1px solid rgba(250, 246, 238, 0.14);
   }
   .concierge-bay:last-child {
     border-bottom: none;
   }
+  .c-bay-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
   .c-crest {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     margin-bottom: 0;
     flex-shrink: 0;
   }
   .c-crest span {
-    font-size: 1.05rem;
+    font-size: 1.15rem;
   }
   .c-info-group {
     display: flex;
@@ -2328,48 +2352,54 @@ body {
     min-width: 0;
   }
   .c-name {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     margin-bottom: 2px;
-    line-height: 1.1;
+    line-height: 1.15;
+    letter-spacing: 0.5px;
   }
   .c-phone {
-    font-size: 0.74rem;
-    letter-spacing: 1px;
+    font-size: 0.82rem;
+    letter-spacing: 1.5px;
     margin-bottom: 0;
     line-height: 1.2;
-    color: rgba(250, 246, 240, 0.75);
+    color: rgba(250, 246, 240, 0.82);
   }
   .c-actions {
     display: flex;
     flex-direction: row;
-    gap: 6px;
-    width: auto;
+    gap: 10px;
+    width: 100%;
     margin-top: 0;
-    flex-shrink: 0;
   }
   .c-btn {
-    padding: 8px 10px;
-    font-size: 0.62rem;
-    letter-spacing: 1px;
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 0.68rem;
+    letter-spacing: 1.8px;
     border-radius: 4px;
+    justify-content: center;
   }
   .c-icon {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
   }
 
-  /* Sleek Thin Horizontal Hotel Cards on Mobile with Dramatic Swoop */
+  /* True Edge-of-Screen Hotel Flight on Mobile */
+  .section-accommodations {
+    overflow: hidden;
+  }
   .hotel-directory-list {
     gap: 12px;
     max-width: 580px;
     margin: 0 auto;
     padding: 0 10px;
+    overflow: visible;
   }
   .hotel-row-item {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 12px;
     padding: 13px 15px;
     border-radius: 8px;
     text-decoration: none;
@@ -2408,15 +2438,18 @@ body {
     white-space: nowrap;
   }
   .hotel-brick-right {
-    transform: translate3d(24px, -65px, 0) rotate(6deg) scale(0.92);
-    filter: blur(2px);
+    transform: translate3d(105vw, -30px, 0) rotate(12deg) scale(0.85);
+    opacity: 0;
+    filter: blur(4px);
   }
   .hotel-brick-left {
-    transform: translate3d(-24px, -65px, 0) rotate(-6deg) scale(0.92);
-    filter: blur(2px);
+    transform: translate3d(-105vw, -30px, 0) rotate(-12deg) scale(0.85);
+    opacity: 0;
+    filter: blur(4px);
   }
   .hotel-brick.is-fallen {
     transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    opacity: 1;
     filter: blur(0px);
   }
   .hotel-row-item.hotel-brick-burgundy.is-fallen:hover,
@@ -2431,8 +2464,95 @@ body {
     grid-template-columns: 1fr;
   }
 
+  /* Streamlined, Elegant Aso Ebi Card (Saves ~140px, Never Crammed) */
   .asoebi-ledger-sheet {
-    padding: 30px 20px;
+    padding: 22px 16px;
+    border-radius: 10px;
+  }
+  .ledger-head {
+    margin-bottom: 16px;
+  }
+  .ledger-tag {
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .ledger-title {
+    font-size: 1.45rem;
+    margin-bottom: 4px;
+  }
+  .ledger-sub {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+  .ledger-price-tag .price-value {
+    font-size: 1.6rem;
+  }
+  .ledger-banking-table {
+    padding: 10px 14px;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .bank-line {
+    padding: 6px 0;
+  }
+  .b-col-title {
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+  }
+  .b-col-data {
+    font-size: 0.88rem;
+  }
+  .b-number {
+    font-size: 1.15rem;
+    letter-spacing: 2px;
+  }
+  .ledger-dispatch-dispatch {
+    margin: 14px 0;
+    padding: 12px 14px;
+  }
+  .dispatch-title {
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .dispatch-text {
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+  .asoebi-access-policy {
+    padding: 12px 14px;
+    margin-top: 14px;
+    border-radius: 6px;
+  }
+  .access-policy-pill {
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    padding: 3px 12px;
+    margin-bottom: 4px;
+  }
+  .access-policy-headline {
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .access-policy-warning {
+    font-size: 0.78rem;
+    letter-spacing: 1.8px;
+  }
+  .asoebi-color-footer {
+    margin-top: 16px;
+    padding-top: 12px;
+  }
+  .color-of-day-banner {
+    padding: 8px 18px;
+    gap: 8px;
+  }
+  .cod-label {
+    font-size: 0.76rem;
+  }
+  .cod-color {
+    font-size: 1.05rem;
   }
   .wishing-well-card {
     padding: 26px 16px;

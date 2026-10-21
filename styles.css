@@ -381,70 +381,6 @@ body {
   font-size: 0.8rem;
 }
 
-/* Editorial Scroll Cue — "EXPLORE OUR STORY" (Zero Gold, Pure Warm Ivory & Burgundy Glass) */
-.hero-scroll-cue {
-  position: absolute;
-  bottom: clamp(22px, 4.5vh, 40px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  text-decoration: none;
-  background: rgba(40, 5, 11, 0.62);
-  border: 1px solid rgba(250, 246, 238, 0.32);
-  border-radius: 9999px;
-  padding: 8px 20px 9px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(250, 246, 238, 0.2);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.hero-scroll-cue:hover {
-  background: rgba(56, 6, 14, 0.88);
-  border-color: rgba(250, 246, 238, 0.65);
-  transform: translateX(-50%) translateY(-3px);
-  box-shadow: 
-    0 12px 30px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(250, 246, 238, 0.35);
-}
-
-.scroll-cue-text {
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 3.2px;
-  color: var(--c-ivory-page, #FAF6EE);
-  text-transform: uppercase;
-  white-space: nowrap;
-  line-height: 1;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-.scroll-cue-arrow {
-  width: 14px;
-  height: 14px;
-  color: var(--c-ivory-page, #FAF6EE);
-  display: block;
-  animation: scrollCueBounce 2s ease-in-out infinite;
-}
-
-@keyframes scrollCueBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(4px);
-  }
-}
-
 .hero-bottom-right {
   position: absolute;
   bottom: clamp(20px, 4vh, 36px);
@@ -2330,19 +2266,6 @@ body {
 
   .hero-bottom-right {
     display: none; /* keep clean and spacious on small screens */
-  }
-  .hero-scroll-cue {
-    bottom: 20px;
-    padding: 7px 16px 8px;
-    gap: 5px;
-  }
-  .scroll-cue-text {
-    font-size: 0.62rem;
-    letter-spacing: 2.8px;
-  }
-  .scroll-cue-arrow {
-    width: 12px;
-    height: 12px;
   }
   .hero-pill-btn {
     padding: 7px 14px;

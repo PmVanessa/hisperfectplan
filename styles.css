@@ -381,7 +381,69 @@ body {
   font-size: 0.8rem;
 }
 
+/* Editorial Scroll Cue — "EXPLORE OUR STORY" (Zero Gold, Pure Warm Ivory & Burgundy Glass) */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: clamp(22px, 4.5vh, 40px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  background: rgba(40, 5, 11, 0.62);
+  border: 1px solid rgba(250, 246, 238, 0.32);
+  border-radius: 9999px;
+  padding: 8px 20px 9px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(250, 246, 238, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+  cursor: pointer;
+}
 
+.hero-scroll-cue:hover {
+  background: rgba(56, 6, 14, 0.88);
+  border-color: rgba(250, 246, 238, 0.65);
+  transform: translateX(-50%) translateY(-3px);
+  box-shadow: 
+    0 12px 30px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(250, 246, 238, 0.35);
+}
+
+.scroll-cue-text {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 3.2px;
+  color: var(--c-ivory-page, #FAF6EE);
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.scroll-cue-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--c-ivory-page, #FAF6EE);
+  display: block;
+  animation: scrollCueBounce 2s ease-in-out infinite;
+}
+
+@keyframes scrollCueBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
 
 .hero-bottom-right {
   position: absolute;
@@ -1365,6 +1427,13 @@ body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
+.c-info-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .c-name {
   font-family: var(--font-serif);
   font-size: 1.85rem;
@@ -2195,13 +2264,24 @@ body {
     margin-bottom: 0;
   }
 
-  .card-tilt-left,
-  .card-tilt-right,
-  .card-tilt-gentle,
-  .card-tilt-left2,
-  .card-tilt-right2,
+  /* Mobile: keep playful romantic polaroid tilts so mobile is just as cute and dynamic as desktop */
+  .card-tilt-left {
+    transform: rotate(-2deg);
+  }
+  .card-tilt-right {
+    transform: rotate(2deg);
+  }
+  .card-tilt-gentle {
+    transform: rotate(-1deg);
+  }
+  .card-tilt-left2 {
+    transform: rotate(-1.5deg);
+  }
+  .card-tilt-right2 {
+    transform: rotate(1.8deg);
+  }
   .card-tilt-gentle2 {
-    transform: none;
+    transform: rotate(1.2deg);
   }
 }
 
@@ -2251,6 +2331,19 @@ body {
   .hero-bottom-right {
     display: none; /* keep clean and spacious on small screens */
   }
+  .hero-scroll-cue {
+    bottom: 20px;
+    padding: 7px 16px 8px;
+    gap: 5px;
+  }
+  .scroll-cue-text {
+    font-size: 0.62rem;
+    letter-spacing: 2.8px;
+  }
+  .scroll-cue-arrow {
+    width: 12px;
+    height: 12px;
+  }
   .hero-pill-btn {
     padding: 7px 14px;
     font-size: 0.74rem;
@@ -2264,32 +2357,144 @@ body {
   .editorial-section {
     padding: 70px 0;
   }
+
+  /* Sleek Thin Horizontal RSVP Cards on Mobile */
+  .concierge-suite {
+    margin: 0 10px;
+    border-radius: 8px;
+  }
+  .concierge-suite-header {
+    padding: 12px 16px;
+  }
+  .suite-seal-title {
+    font-size: 0.65rem;
+    letter-spacing: 2.5px;
+  }
+  .concierge-dock-grid {
+    display: flex;
+    flex-direction: column;
+  }
   .concierge-bay {
-    padding: 30px 18px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    padding: 12px 14px;
+    gap: 12px;
+    border-right: none;
+    border-bottom: 1px solid rgba(250, 246, 238, 0.12);
   }
-  .hotel-directory-list {
-    gap: 16px;
-    max-width: 580px;
-    margin: 0 auto;
+  .concierge-bay:last-child {
+    border-bottom: none;
   }
-  .hotel-row-item {
+  .c-crest {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  .c-crest span {
+    font-size: 1.05rem;
+  }
+  .c-info-group {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
-    padding: 20px 18px;
-    border-radius: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+  .c-name {
+    font-size: 1.15rem;
+    margin-bottom: 2px;
+    line-height: 1.1;
+  }
+  .c-phone {
+    font-size: 0.74rem;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+    line-height: 1.2;
+    color: rgba(250, 246, 240, 0.75);
+  }
+  .c-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    width: auto;
+    margin-top: 0;
+    flex-shrink: 0;
+  }
+  .c-btn {
+    padding: 8px 10px;
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    border-radius: 4px;
+  }
+  .c-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Sleek Thin Horizontal Hotel Cards on Mobile with Dramatic Swoop */
+  .hotel-directory-list {
+    gap: 12px;
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+  .hotel-row-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 13px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+  .hotel-row-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .hotel-row-title {
+    font-size: 0.98rem;
+    margin-bottom: 2px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hotel-row-area {
+    font-size: 0.74rem;
+    line-height: 1.2;
+    letter-spacing: 0.4px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .hotel-row-link-cue {
-    width: 100%;
-    justify-content: center;
+    width: auto;
+    flex-shrink: 0;
+    padding: 6px 11px;
+    font-size: 0.68rem;
+    letter-spacing: 1.2px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
   }
   .hotel-brick-right {
-    transform: translate3d(calc(50vw + 25%), -220px, 0) rotate(16deg) scale(0.8);
-    filter: blur(4px);
+    transform: translate3d(24px, -65px, 0) rotate(6deg) scale(0.92);
+    filter: blur(2px);
   }
   .hotel-brick-left {
-    transform: translate3d(calc(-50vw - 25%), -220px, 0) rotate(-16deg) scale(0.8);
-    filter: blur(4px);
+    transform: translate3d(-24px, -65px, 0) rotate(-6deg) scale(0.92);
+    filter: blur(2px);
+  }
+  .hotel-brick.is-fallen {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    filter: blur(0px);
   }
   .hotel-row-item.hotel-brick-burgundy.is-fallen:hover,
   .hotel-row-item.hotel-brick-ivory.is-fallen:hover {
@@ -2307,15 +2512,28 @@ body {
     padding: 30px 20px;
   }
   .wishing-well-card {
-    padding: 36px 18px;
+    padding: 26px 16px;
+    border-radius: 10px;
+  }
+  .wishing-well-note {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
   }
   .wishing-well-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
+  }
+  .wishing-well-box {
+    padding: 16px 14px;
+    gap: 10px;
   }
   .ww-acct-row {
     flex-direction: column;
     gap: 10px;
+  }
+  .ww-acct-num {
+    font-size: 1.25rem;
   }
   .ww-copy-btn {
     width: 100%;
@@ -2338,7 +2556,7 @@ body {
     justify-content: center;
   }
   .hotel-row-item {
-    padding: 18px 16px;
+    padding: 11px 13px;
   }
 }
 
